@@ -2,7 +2,7 @@
 
 = Introdução =
 
-Neste exato momento o framework da total suporte a persistencia de objetos diretamente na base de dados do SQLite para o Android em sua versão 2.2. O h4Android possui a capacidade de gerar completamente o ddl da base de dados, além do sql de consulta, utilizando o Query que pode receber as sentenças de restrição para montar um SQL dinamicamente para o framework pesquisar na sua base.
+Neste exato momento o framework da total suporte a persistencia de objetos diretamente na base de dados do SQLite para o Android em sua versão 2.2. O h4Android possui a capacidade de gerar completamente o ddl da base de dados, além do sql de consulta, utilizando o Query que pode receber as sentenças de restrição para montar um SQL dinamicamente para o framework pesquisar na sua base. Quando comecei a desenvolver este projeto tinha em mente ser o menos intrusivo possível, acredito estar bem perto dos meus planos, isto nos dá uma liberdade de simplesmente criar um POJO e na assinatura da classe usar a anotação _@Entity_ e pronto!! Isto ja é o suficiente para que o framework possa trabalhar com ele de modo a mapea-lo no banco de dados. Um problema que ainda não tive tempo de resolver é a necessidade de informar quais classes devam ser tratadas, uma solução que encontrei para isso e informar no construtor do nosso gerenciador de persistência uma lista com os nome das classes, o nome do banco e a versão do mesmo, já que na implementação para o Android 2.2 estou trabalhando com uma classe que extende de _SQLiteOpenHelper_.
 
 
 
