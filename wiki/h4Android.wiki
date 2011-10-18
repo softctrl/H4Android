@@ -1,4 +1,5 @@
 #summary About h4Android.
+#labels about
 
 = Introdução =
 
@@ -6,7 +7,9 @@ Neste exato momento o framework da total suporte a persistencia de objetos diret
 
 Funcionalidades já implementadas:
   * Geração do DDL para criação de um banco completamente modelado pelas classes;
-  * Ações de CRUD, é possivel inserir, editar, excluir e buscar objetos a partir de um objeto de uma classe anotada com _@Entity_.
+  * Ações de CRUD, é possivel inserir, editar, excluir e buscar objetos a partir de um objeto de uma classe anotada com _@Entity_;
+  * Suporte a fields do tipo *enum*;
+
 As seguintes funcionalidades ainda estão pendentes de implementação:
   * Suporte às cardinalidades;
   * Melhorar tratamento para fields do tipo _java.util.Date_;
