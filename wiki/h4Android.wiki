@@ -1,4 +1,4 @@
-#summary Iniciando com o h4android.
+#summary About h4Android.
 
 = Introdução =
 
