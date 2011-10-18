@@ -14,4 +14,4 @@ As seguintes funcionalidades ainda estão pendentes de implementação:
   * Suporte às cardinalidades;
   * Suporte à consultas com paginação;
   * Melhorar tratamento para fields do tipo _java.util.Date_;
-  * Finalizar tratamaneto para field do tipo _Boolean_ (os mesmos são tratados seguindo a especificação do próprio SQLite em que são persistidos na base como *Integer* sendo false persistido como 0 e true como 1);
+  * Finalizar tratamaneto para field do tipo _Boolean_ (os mesmos são tratados seguindo a especificação do próprio SQLite em que são persistidos na base como *Integer* sendo _false_ persistido como _0_ e _true_ como _1_);
