@@ -49,7 +49,9 @@ import br.com.softctrl.h4android.orm.util.log.Log;
 
 /**
  * 
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class PersistenceManagerA22 extends SQLiteOpenHelper implements
@@ -71,8 +73,21 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 		return this.sqLiteDatabase;
 	}
 
-	public PersistenceManagerA22(Context context, int dbName, int dbVersion, int mapedClass, int mode,
-			ModelBeavior modelBeavior, int typeLog)
+	/**
+	 * 
+	 * @param context
+	 * @param dbName
+	 * @param dbVersion
+	 * @param mapedClass
+	 * @param mode
+	 * @param modelBeavior
+	 * @param typeLog
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public PersistenceManagerA22(Context context, int dbName, int dbVersion,
+			int mapedClass, int mode, ModelBeavior modelBeavior, int typeLog)
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {
 
@@ -83,6 +98,33 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 			GEN_MODEL = new GenerateModel();
 			GEN_MODEL.loadClasses(context.getString(mapedClass).trim()
 					.split(";"));
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param context
+	 * @param dataBaseName
+	 * @param dataBaseVersion
+	 * @param mapedClass
+	 * @param mode
+	 * @param modelBeavior
+	 * @param typeLog
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public PersistenceManagerA22(Context context, String dataBaseName,
+			int dataBaseVersion, List<String> mapedClass, int mode,
+			ModelBeavior modelBeavior, int typeLog)
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException {
+		super(context, dataBaseName.trim(), null, dataBaseVersion);
+		log = new Log(typeLog);
+		if ((GEN_MODEL == null) || modelBeavior.equals(ModelBeavior.RENEW)) {
+			GEN_MODEL = new GenerateModel();
+			GEN_MODEL.loadClasses(mapedClass);
 		}
 
 	}
