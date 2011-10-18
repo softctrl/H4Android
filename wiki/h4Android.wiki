@@ -5,7 +5,9 @@
 Neste exato momento o framework da total suporte a persistencia de objetos diretamente na base de dados do SQLite para o Android em sua versão 2.2. O h4Android possui a capacidade de gerar completamente o ddl da base de dados, além do sql de consulta, utilizando o Query que pode receber as sentenças de restrição para montar um SQL dinamicamente para o framework pesquisar na sua base.
 
 
-= Details =
+
+
+= Detalhes =
 
 adadasdAdd your content here.  Format your content with:
   * Text in *bold* or _italic_
