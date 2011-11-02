@@ -27,6 +27,8 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
+import java.util.List;
+
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQuery;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
@@ -35,14 +37,16 @@ import br.com.softctrl.h4android.orm.util.StringUtil;
 /**
  * "In"
  * 
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class In extends ElementsQuery {
 
-	private Object[] values;
+	protected Object[] values;
 
-	private In(String field) {
+	protected In(String field) {
 		super(field);
 	}
 
@@ -59,24 +63,24 @@ public class In extends ElementsQuery {
 	 * 
 	 * @see
 	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * get()
+	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
 	 */
 	@Deprecated
 	@Override
-	public IElementsQuery get() {
-		return this;
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
+		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
+	 * @see java.lang.Object#toString()
 	 */
-	@Deprecated
 	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public String toString() {
+
+		return String.format("%s IN(%s)", getKey(), getValue());
+
 	}
 
 	/*
@@ -88,14 +92,26 @@ public class In extends ElementsQuery {
 	 */
 	@Override
 	public String toSql() {
+		return String.format(" AND (%s)", toString());
+	}
 
-		String sColumn = FieldReflection.getColumnName(getClassEntity(),
-				getNameObject());
+	@Override
+	public <T> List<T> list() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getKey() {
+		return FieldReflection.getColumnName(getClassEntity(), getName());
+	}
+
+	@Override
+	public Object getValue() {
 		String sValues = StringUtil.objectToString(values[0]);
 		for (int i = 1; i < values.length; i++) {
 			sValues += ", " + StringUtil.objectToString(values[i]);
 		}
-		return String.format(" AND ( %s IN(%s) )", sColumn, sValues);
-
+		return sValues;
 	}
 }

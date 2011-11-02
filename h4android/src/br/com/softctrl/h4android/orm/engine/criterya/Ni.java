@@ -27,24 +27,18 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
-import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQuery;
-import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
-import br.com.softctrl.h4android.orm.reflection.FieldReflection;
-import br.com.softctrl.h4android.orm.util.StringUtil;
 
 /**
  * "Not In"
  * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
  * @version $Revision: 0.0.0.1 $
  */
-public class Ni extends ElementsQuery {
-
-	private Object[] values;
-
-	private Ni(String field) {
-		super(field);
+public class Ni extends In {
+	
+	public Ni(String field){
+		super(field);		
 	}
-
+	
 	public static Ni create(String field, Object[] values) {
 
 		Ni ni = new Ni(field);
@@ -52,32 +46,19 @@ public class Ni extends ElementsQuery {
 		return ni;
 
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * get()
+	 * @see java.lang.Object#toString()
 	 */
-	@Deprecated
 	@Override
-	public IElementsQuery get() {
-		return this;
-	}
+	public String toString() {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
-	 */
-	@Deprecated
-	@Override
-	public void add(IElementsQuery iElementsQuery) {
-	}
+		return String.format("%s IN(%s)", getKey(), getValue());
 
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -87,14 +68,8 @@ public class Ni extends ElementsQuery {
 	 */
 	@Override
 	public String toSql() {
-
-		String sColumn = FieldReflection.getColumnName(getClassEntity(),
-				getNameObject());
-		String sValues = StringUtil.objectToString(values[0]);
-		for (int i = 1; i < values.length; i++) {
-			sValues += ", " + StringUtil.objectToString(values[i]);
-		}
-		return String.format(" AND NOT( %s IN(%s) )", sColumn, sValues);
-
+		return String.format(" AND NOT (%s)", toString());
 	}
+	
+	
 }

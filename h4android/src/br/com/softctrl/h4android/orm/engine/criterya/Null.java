@@ -27,6 +27,8 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
+import java.util.List;
+
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQuery;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
@@ -34,7 +36,9 @@ import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 /**
  * "Nullo"
  * 
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class Null extends ElementsQuery {
@@ -55,24 +59,24 @@ public class Null extends ElementsQuery {
 	 * 
 	 * @see
 	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * get()
+	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
 	 */
 	@Deprecated
 	@Override
-	public IElementsQuery get() {
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
+	 * @see java.lang.Object#toString()
 	 */
-	@Deprecated
 	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public String toString() {
+
+		return String.format("%s IS NULL", getKey());
+
 	}
 
 	/*
@@ -84,11 +88,23 @@ public class Null extends ElementsQuery {
 	 */
 	@Override
 	public String toSql() {
+		return String.format(" AND (%s)", toString());
+	}
 
-		String sColumn = FieldReflection.getColumnName(getClassEntity(),
-				getNameObject());
-		return String.format(" AND (%s IS NULL)", sColumn);
+	@Override
+	public <T> List<T> list() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public String getKey() {
+		return FieldReflection.getColumnName(getClassEntity(), getName());
+	}
+
+	@Override
+	public Object getValue() {
+		return null;
 	}
 
 }

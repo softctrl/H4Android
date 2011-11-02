@@ -27,6 +27,8 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
+import java.util.List;
+
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQueryModel1;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
 
@@ -57,24 +59,18 @@ public class Ne extends ElementsQueryModel1 {
 	 * 
 	 * @see
 	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * get()
-	 */
-	@Deprecated
-	@Override
-	public IElementsQuery get() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
 	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
 	 */
 	@Deprecated
 	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
+		return null;
+	}
+
+	@Override
+	public <T> List<T> list() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -28,75 +28,108 @@
 package br.com.softctrl.h4android.orm.engine.criterya;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQuery;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
+import br.com.softctrl.h4android.orm.engine.i.IPersistenceManager;
+import br.com.softctrl.h4android.orm.exception.SelectAllQueryException;
 import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class Query extends ElementsQuery {
 
+	private enum TypeSelect {
+		ALL, OTHER
+	}
+
+	private IPersistenceManager pm;
+
 	private String select = "*";
-	private HashMap<String, IElementsQuery> elements = new HashMap<String, IElementsQuery>();
+	private TypeSelect typeQuery = TypeSelect.ALL;
+	private HashMap<Integer, IElementsQuery> elements = new HashMap<Integer, IElementsQuery>();
+	private int count=0;
 
 	protected Query(String nameObject) {
 		super(nameObject);
 	}
 
-	public static <T> Query create(Class<T> classEntity) {
+	public static <T> Query create(Class<T> classEntity, IPersistenceManager pm) {
 		String entityName = EntityReflection.getTableName(classEntity);
 		Query q = new Query(entityName);
+		q.pm = pm;
 		q.setClassEntity(classEntity);
 		return q;
 	}
 
-	@Deprecated
 	@Override
-	public IElementsQuery get() {
-		return null;
-	}
-
-	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
 
 		((ElementsQuery) iElementsQuery).setClassEntity(getClassEntity());
-		elements.put(iElementsQuery.getNameObject(), iElementsQuery);
+		elements.put(++count, iElementsQuery);
+		return this;
 
 	}
 
 	@Override
 	public String toSql() {
-		String sql = "SELECT " + select + " FROM %s WHERE (1=1) %s;";
-		String nameTable = EntityReflection.getTableName(getClassEntity());
+		String sql = "SELECT " + select + " FROM %s WHERE (1=1)%s;";
 		String whereClausules = "";
-		for (Entry<String, IElementsQuery> e : elements.entrySet()) {
-			whereClausules += String.format(e.getValue().toSql(),
-					FieldReflection.getColumnName(getClassEntity(), e
-							.getValue().getNameObject()));
+		for (Entry<Integer, IElementsQuery> e : elements.entrySet()) {
+			whereClausules += e.getValue().toSql();
 		}
-		
-		return String.format(sql, nameTable, whereClausules);
-	}
-
-	public Query selectAll() {
-		select = "*";
-		return this;
+		return String.format(sql, getKey(), whereClausules);
 	}
 
 	public Query selectCount() {
 		select = "COUNT(*)";
+		typeQuery = TypeSelect.OTHER;
 		return this;
 	}
 
 	public Query selectMax(String field) {
 		select = "MAX("
 				+ FieldReflection.getColumnName(getClassEntity(), field) + ")";
+		typeQuery = TypeSelect.OTHER;
 		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * list()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> java.util.List<T> list() {
+		
+		if (typeQuery != TypeSelect.ALL) {
+			new SelectAllQueryException("Tipo de consulta não retorna list.");
+		}
+		String sql = toSql();
+		System.out.println(sql);
+		return (List<T>) pm.findAll(sql, getClassEntity());
+		
+	}
+
+	@Override
+	public String getKey() {
+		return EntityReflection.getTableName(getClassEntity());
+	}
+
+	@Override
+	public Object getValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

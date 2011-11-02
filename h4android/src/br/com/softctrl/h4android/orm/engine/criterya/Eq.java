@@ -27,8 +27,11 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
+import java.util.List;
+
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQueryModel1;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
+import br.com.softctrl.h4android.orm.exception.MethodDeprecatedInException;
 
 public class Eq extends ElementsQueryModel1 {
 
@@ -46,13 +49,24 @@ public class Eq extends ElementsQueryModel1 {
 
 	@Deprecated
 	@Override
-	public IElementsQuery get() {
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
+		new MethodDeprecatedInException(
+				"method <add> not suprted in Eq restriction.");
 		return null;
 	}
 
-	@Deprecated
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * list()
+	 */
 	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public <T> List<T> list() {
+		new MethodDeprecatedInException(
+				"method <List> not suprted in Eq restriction.");
+		return null;
 	}
 
 }
