@@ -27,7 +27,6 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya.pattern;
 
-import br.com.softctrl.h4android.orm.util.StringUtil;
 
 /**
  * @author <a

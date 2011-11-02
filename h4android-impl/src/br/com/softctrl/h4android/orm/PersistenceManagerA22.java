@@ -348,7 +348,9 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 					lEntity.add((T) e);
 					CursorUtil.loadFieldsInCursor(c, e);
 				} catch (InstantiationException e1) {
+					log.e("H4Android", e1.getMessage());
 				} catch (IllegalAccessException e1) {
+					log.e("H4Android", e1.getMessage());
 				}
 			} while (c.moveToNext());
 			c.close();

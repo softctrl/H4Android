@@ -30,7 +30,9 @@ package br.com.softctrl.h4android.orm.util.log;
 import br.com.softctrl.h4android.orm.util.log.i.ILog;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class Log implements ILog {
@@ -45,8 +47,11 @@ public class Log implements ILog {
 			Class<?> classLog = Class.forName(PACKAGE_LOG_L + type);
 			iLog = (ILog) classLog.newInstance();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (InstantiationException e) {
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
 
 	}

@@ -41,7 +41,9 @@ import br.com.softctrl.h4android.orm.util.EnumerateUtils;
 import br.com.softctrl.h4android.orm.util.FieldUtils;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class FieldReflection {
@@ -60,7 +62,9 @@ public class FieldReflection {
 			value = field.get(object);
 			FieldUtils.unsetAccessible(field);
 		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
 		return value;
 
@@ -95,6 +99,7 @@ public class FieldReflection {
 			Field field = getDeclaredField(object.getClass(), fieldName);
 			value = getValue(object, field);
 		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		}
 		return value;
 
@@ -105,7 +110,9 @@ public class FieldReflection {
 		try {
 			field = classTarget.getDeclaredField(fieldName);
 		} catch (SecurityException e) {
+			e.printStackTrace();
 		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
 		}
 		return field;
 	}
@@ -113,7 +120,7 @@ public class FieldReflection {
 	public static void setValue(Object e, Class<?> targetClass, Field field,
 			Object value) {
 		try {
-			
+
 			FieldUtils.setAccessible(field);
 			if (field.getType().isEnum()) {
 
@@ -128,6 +135,7 @@ public class FieldReflection {
 			}
 			FieldUtils.unsetAccessible(field);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
