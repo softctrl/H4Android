@@ -31,7 +31,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class MethodUtils {
@@ -42,7 +44,9 @@ public class MethodUtils {
 		try {
 			m = classTarget.getDeclaredMethod(name, parameterTypes);
 		} catch (SecurityException e) {
+			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
 		}
 		return m;
 	}
@@ -53,8 +57,11 @@ public class MethodUtils {
 		try {
 			result = method.invoke(obj, args);
 		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 		}
 		return result;
 

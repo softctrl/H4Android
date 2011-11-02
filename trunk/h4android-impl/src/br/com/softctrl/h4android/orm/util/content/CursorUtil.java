@@ -39,7 +39,9 @@ import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  * 
  */
@@ -86,7 +88,9 @@ public class CursorUtil {
 		try {
 			return cursor.getClass().getMethod(namemethod, int.class);
 		} catch (SecurityException e) {
+			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
 		}
 		return null;
 
