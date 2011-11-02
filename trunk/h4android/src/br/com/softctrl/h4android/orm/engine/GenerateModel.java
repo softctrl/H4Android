@@ -30,11 +30,11 @@ package br.com.softctrl.h4android.orm.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.softctrl.h4android.orm.engine.i.IModelORM;
+import br.com.softctrl.h4android.orm.engine.i.IModelORMDDL;
 
 public class GenerateModel {
 
-	private List<IModelORM> lista = new ArrayList<IModelORM>();
+	private List<IModelORMDDL> lista = new ArrayList<IModelORMDDL>();
 
 	public GenerateModel() {
 		super();
@@ -61,7 +61,7 @@ public class GenerateModel {
 	public String[] getSQLModel() {
 
 		List<String> model = new ArrayList<String>();
-		for (IModelORM modelORM : lista) {
+		for (IModelORMDDL modelORM : lista) {
 			model.add(modelORM.createSQL());
 			// System.out.println(l.dropSQL());
 			// System.out.println(l.createSQL());
