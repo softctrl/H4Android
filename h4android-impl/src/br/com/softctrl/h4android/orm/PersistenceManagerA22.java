@@ -38,8 +38,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import br.com.softctrl.h4android.orm.engine.GenerateModel;
-import br.com.softctrl.h4android.orm.engine.IPersistenceManager;
 import br.com.softctrl.h4android.orm.engine.criterya.QuerySample;
+import br.com.softctrl.h4android.orm.engine.i.IPersistenceManager;
 import br.com.softctrl.h4android.orm.enumeration.ModelBeavior;
 import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.util.FieldValue;
@@ -301,16 +301,50 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findAll(T entity) {
+		
+		return (List<T>) findAll((new QuerySample(entity)).toSql(), entity.getClass());
+//		SQLiteDatabase db = getDbSQLite();
+//		Cursor c = db.rawQuery((new QuerySample(entity)).toSql(), null);
+//		if (c.moveToFirst()) {
+//			Class<?> classEntity = entity.getClass();
+//			List<T> lEntity = new ArrayList<T>();
+//			do {
+//				try {
+//					Object e = null;
+//					e = classEntity.newInstance();
+//					lEntity.add((T) e);
+//					CursorUtil.loadFieldsInCursor(c, e);
+//				} catch (InstantiationException e1) {
+//				} catch (IllegalAccessException e1) {
+//				}
+//			} while (c.moveToNext());
+//			c.close();
+//			return lEntity;
+//		} else {
+//			c.close();
+//			return null;
+//		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.i.IPersistenceManager#findAll(java
+	 * .lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> findAll(String sqlSelect, Class<T> classEntity) {
 
 		SQLiteDatabase db = getDbSQLite();
-		Cursor c = db.rawQuery((new QuerySample(entity)).toSql(), null);
+		Cursor c = db.rawQuery(sqlSelect, null);
 		if (c.moveToFirst()) {
-			Class<?> classEntity = entity.getClass();
 			List<T> lEntity = new ArrayList<T>();
 			do {
 				try {
-					Object e = null;
-					e = classEntity.newInstance();
+					Object e = classEntity.newInstance();
 					lEntity.add((T) e);
 					CursorUtil.loadFieldsInCursor(c, e);
 				} catch (InstantiationException e1) {
