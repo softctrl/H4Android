@@ -29,39 +29,132 @@ package br.com.softctrl.h4android.orm.engine.criterya;
 
 public class Restriction {
 
+	/**
+	 * Restrição condicional IGUAIL (<field> = <value>).
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
 	public static Eq eq(String field, Object value) {
 
 		return Eq.create(field, value);
 
 	}
 
-	public static Gt greaterThan(String field, Object value) {
+	/**
+	 * Restrição condicional MAIOR QUE (<field> > <value>)
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Gt gt(String field, Object value) {
 
 		return Gt.create(field, value);
 
 	}
 
+	/**
+	 * Restrição condicional MAIOR OU IGUAL A (<field> >= <value>)
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Ge ge(String field, Object value) {
+
+		return Ge.create(field, value);
+
+	}
+
+	/**
+	 * Restrição condicional IN (<field> IN(<values>0,..,<values>n)).
+	 * 
+	 * @param field
+	 * @param values
+	 * @return
+	 */
 	public static In in(String field, Object[] values) {
 
 		return In.create(field, values);
 
 	}
 
+	/**
+	 * Restrição condicional MENOR QUE (<field> < <value>).
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Lt lt(String field, Object value) {
+
+		return Lt.create(field, value);
+
+	}
+
+	/**
+	 * Restrição condicional MENOR OU IGUAL A (<field> <= <value>).
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Le le(String field, Object value) {
+
+		return Le.create(field, value);
+
+	}
+
+	/**
+	 * Restrição condicional DIFERENTE (<field> <> <value>).
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Ne ne(String field, Object value) {
+
+		return Ne.create(field, value);
+
+	}
+
+	/**
+	 * Restrição condicional NOT IN (not (<field> IN(<values>0,..,<values>n))).
+	 * 
+	 * @param field
+	 * @param values
+	 * @return
+	 */
+	public static Ni ni(String field, Object[] values) {
+
+		return Ni.create(field, values);
+
+	}
+
+	/**
+	 * Restrição condicional IS NULL (<field> IS NULL).
+	 * 
+	 * @param field
+	 * @return
+	 */
 	public static Null isNull(String field) {
 
 		return Null.create(field);
 
 	}
 
-	public static Lt lessThan(String field, Object value) {
+	/**
+	 * Restrição condicional LIKE (<field> LIKE (<value>)).
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static Lk lk(String field, String value) {
 
-		return Lt.create(field, value);
-
-	}
-
-	public static Ne notEq(String field, Object value) {
-
-		return Ne.create(field, value);
+		return Lk.create(field, value);
 
 	}
 
