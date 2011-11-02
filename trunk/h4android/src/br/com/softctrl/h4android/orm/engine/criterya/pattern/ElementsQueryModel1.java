@@ -31,11 +31,12 @@ import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 import br.com.softctrl.h4android.orm.util.StringUtil;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
-public abstract class ElementsQueryModel1 extends ElementsQuery implements
-		IElementsQuery {
+public abstract class ElementsQueryModel1 extends ElementsQuery {
 
 	protected String SIGNAL_OPERATOR = "=";
 	protected Object value;
@@ -44,15 +45,54 @@ public abstract class ElementsQueryModel1 extends ElementsQuery implements
 		super(nameObject);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * getValue()
+	 */
+	@Override
+	public Object getValue() {
+		return StringUtil.objectToString(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+
+		String sColumn = FieldReflection.getColumnName(getClassEntity(),
+				getName());
+		return String.format("%s %s %s", sColumn, SIGNAL_OPERATOR, getValue());
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * getKey()
+	 */
+	@Override
+	public String getKey() {
+		return FieldReflection.getColumnName(getClassEntity(), getName());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * toSql()
+	 */
 	@Override
 	public String toSql() {
-
-		String sValue = StringUtil.objectToString(value);
-		String sColumn = FieldReflection.getColumnName(getClassEntity(),
-				getNameObject());
-		return String.format(" AND (%s %s %s)", sColumn, SIGNAL_OPERATOR,
-				sValue);
-
+		return String.format(" AND (%s)", toString());
 	}
 
 }

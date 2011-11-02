@@ -27,8 +27,12 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya.pattern;
 
+import br.com.softctrl.h4android.orm.util.StringUtil;
+
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public abstract class ElementsQuery implements IElementsQuery {
@@ -37,23 +41,39 @@ public abstract class ElementsQuery implements IElementsQuery {
 
 	private String nameObject;
 
+	/**
+	 * 
+	 * @param nameObject
+	 */
 	public ElementsQuery(String nameObject) {
 		this.nameObject = nameObject;
 	}
 
-	public String getNameObject() {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
+	 * getNameObject()
+	 */
+	@Override
+	public String getName() {
 		return nameObject;
 	}
 
-	public void setNameObject(String nameObject) {
-		this.nameObject = nameObject;
-	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	protected <T> Class<T> getClassEntity() {
 		return (Class<T>) classEntity;
 	}
 
+	/**
+	 * 
+	 * @param classEntity
+	 */
 	public <T> void setClassEntity(Class<T> classEntity) {
 		this.classEntity = classEntity;
 	}
