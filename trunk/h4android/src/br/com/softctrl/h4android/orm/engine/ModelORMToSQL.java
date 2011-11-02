@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.softctrl.h4android.orm.engine.i.IModelORM;
+import br.com.softctrl.h4android.orm.engine.i.IModelORMDDL;
 import br.com.softctrl.h4android.orm.exception.NotEntityException;
 import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
@@ -41,7 +41,7 @@ import br.com.softctrl.h4android.orm.util.StringUtil;
  * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
  * @version $Revision: 0.0.0.1 $
  */
-public class ModelORMToSQL implements IModelORM {
+public class ModelORMToSQL implements IModelORMDDL {
 
 	private Class<?> targetClass;
 
