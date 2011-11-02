@@ -27,20 +27,23 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya.pattern;
 
+import java.util.List;
+
+
 /**
  * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
  * @version $Revision: 0.0.0.1 $
  */
 public interface IElementsQuery {
 
-	public abstract IElementsQuery get();
-
-	public abstract void add(IElementsQuery iElementsQuery);
-
+	public abstract IElementsQuery add(IElementsQuery iElementsQuery);
+	
+	public abstract String getKey();
+	public abstract Object getValue();
+	
 	public abstract String toSql();
-
-	public abstract String getNameObject();
-
-	public abstract void setNameObject(String nameObject);
+	public abstract String getName();
+	//public abstract void setNameObject(String nameObject);	
+	public abstract <T> List<T> list();
 
 }
