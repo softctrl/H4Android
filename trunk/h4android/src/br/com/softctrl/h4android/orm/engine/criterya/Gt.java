@@ -27,8 +27,11 @@
  */
 package br.com.softctrl.h4android.orm.engine.criterya;
 
+import java.util.List;
+
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.ElementsQueryModel1;
 import br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery;
+import br.com.softctrl.h4android.orm.exception.MethodDeprecatedInException;
 
 /**
  * "Maior que"
@@ -56,24 +59,21 @@ public class Gt extends ElementsQueryModel1 {
 	 * 
 	 * @see
 	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
-	 * get()
-	 */
-	@Deprecated
-	@Override
-	public IElementsQuery get() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery#
 	 * add(br.com.softctrl.h4android.orm.engine.criterya.pattern.IElementsQuery)
 	 */
 	@Deprecated
 	@Override
-	public void add(IElementsQuery iElementsQuery) {
+	public IElementsQuery add(IElementsQuery iElementsQuery) {
+		new MethodDeprecatedInException(
+				"method <add> not suprted in Gt restriction.");		
+		return null;
+	}
+
+	@Override
+	public <T> List<T> list() {
+		new MethodDeprecatedInException(
+				"method <list> not suprted in Gt restriction.");
+		return null;
 	}
 
 }
