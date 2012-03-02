@@ -301,29 +301,30 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findAll(T entity) {
-		
-		return (List<T>) findAll((new QuerySample(entity)).toSql(), entity.getClass());
-//		SQLiteDatabase db = getDbSQLite();
-//		Cursor c = db.rawQuery((new QuerySample(entity)).toSql(), null);
-//		if (c.moveToFirst()) {
-//			Class<?> classEntity = entity.getClass();
-//			List<T> lEntity = new ArrayList<T>();
-//			do {
-//				try {
-//					Object e = null;
-//					e = classEntity.newInstance();
-//					lEntity.add((T) e);
-//					CursorUtil.loadFieldsInCursor(c, e);
-//				} catch (InstantiationException e1) {
-//				} catch (IllegalAccessException e1) {
-//				}
-//			} while (c.moveToNext());
-//			c.close();
-//			return lEntity;
-//		} else {
-//			c.close();
-//			return null;
-//		}
+
+		return (List<T>) findAll((new QuerySample(entity)).toSql(),
+				entity.getClass());
+		// SQLiteDatabase db = getDbSQLite();
+		// Cursor c = db.rawQuery((new QuerySample(entity)).toSql(), null);
+		// if (c.moveToFirst()) {
+		// Class<?> classEntity = entity.getClass();
+		// List<T> lEntity = new ArrayList<T>();
+		// do {
+		// try {
+		// Object e = null;
+		// e = classEntity.newInstance();
+		// lEntity.add((T) e);
+		// CursorUtil.loadFieldsInCursor(c, e);
+		// } catch (InstantiationException e1) {
+		// } catch (IllegalAccessException e1) {
+		// }
+		// } while (c.moveToNext());
+		// c.close();
+		// return lEntity;
+		// } else {
+		// c.close();
+		// return null;
+		// }
 
 	}
 
