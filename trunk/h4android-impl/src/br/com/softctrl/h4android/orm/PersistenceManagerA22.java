@@ -41,11 +41,13 @@ import br.com.softctrl.h4android.orm.engine.GenerateModel;
 import br.com.softctrl.h4android.orm.engine.criterya.QuerySample;
 import br.com.softctrl.h4android.orm.engine.i.IPersistenceManager;
 import br.com.softctrl.h4android.orm.enumeration.ModelBeavior;
+import br.com.softctrl.h4android.orm.exception.NotEntityException;
 import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.util.FieldValue;
 import br.com.softctrl.h4android.orm.util.content.ContentValueUtil;
 import br.com.softctrl.h4android.orm.util.content.CursorUtil;
 import br.com.softctrl.h4android.orm.util.log.Log;
+import br.com.softctrl.h4android.orm.util.log.i.ILog;
 
 /**
  * 
@@ -54,6 +56,7 @@ import br.com.softctrl.h4android.orm.util.log.Log;
  *         a>.
  * @version $Revision: 0.0.0.1 $
  */
+@SuppressWarnings("deprecation")
 public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 		IPersistenceManager {
 
@@ -78,25 +81,26 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	 * @param context
 	 * @param dbName
 	 * @param dbVersion
-	 * @param mapedClass
+	 * @param mappedClass
 	 * @param mode
 	 * @param modelBeavior
 	 * @param typeLog
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws NotEntityException
 	 */
 	public PersistenceManagerA22(Context context, int dbName, int dbVersion,
-			int mapedClass, int mode, ModelBeavior modelBeavior, int typeLog)
+			int mappedClass, int mode, ModelBeavior modelBeavior, int typeLog)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, NotEntityException {
 
 		super(context, context.getString(dbName).trim(), null, new Integer(
 				context.getString(dbVersion)));
 		log = new Log(typeLog);
 		if ((GEN_MODEL == null) || modelBeavior.equals(ModelBeavior.RENEW)) {
 			GEN_MODEL = new GenerateModel();
-			GEN_MODEL.loadClasses(context.getString(mapedClass).trim()
+			GEN_MODEL.loadClasses(context.getString(mappedClass).trim()
 					.split(";"));
 		}
 
@@ -107,24 +111,25 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	 * @param context
 	 * @param dataBaseName
 	 * @param dataBaseVersion
-	 * @param mapedClass
+	 * @param mappedClass
 	 * @param mode
 	 * @param modelBeavior
 	 * @param typeLog
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws NotEntityException
 	 */
 	public PersistenceManagerA22(Context context, String dataBaseName,
-			int dataBaseVersion, List<String> mapedClass, int mode,
+			int dataBaseVersion, List<String> mappedClass, int mode,
 			ModelBeavior modelBeavior, int typeLog)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, NotEntityException {
 		super(context, dataBaseName.trim(), null, dataBaseVersion);
 		log = new Log(typeLog);
 		if ((GEN_MODEL == null) || modelBeavior.equals(ModelBeavior.RENEW)) {
 			GEN_MODEL = new GenerateModel();
-			GEN_MODEL.loadClasses(mapedClass);
+			GEN_MODEL.loadClasses(mappedClass);
 		}
 
 	}
@@ -139,7 +144,7 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	@Override
 	public void loadClasses(List<String> entityClasses)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, NotEntityException {
 		GEN_MODEL.loadClasses(entityClasses);
 	}
 
@@ -170,20 +175,37 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 	 * br.com.softctrl.h4android.orm.engine.IPersistenceManager#insertAll(T[])
 	 */
 	@Override
-	public <T> void insertAll(T[] entities) {
+	public <T> void insertAll(T[] entityes) {
 
-		Class<?> entityClass = entities[0].getClass();
+		Class<?> entityClass = entityes[0].getClass();
 		String tableName = EntityReflection.getTableName(entityClass);
-		List<ContentValues> cValues = new ArrayList<ContentValues>();
-		for (int i = 0; i < entities.length; i++) {
-			cValues.add(ContentValueUtil.putAll(EntityReflection
-					.getFieldValues(entities[i])));
+		try {
+			getDbSQLite().beginTransaction();
+			for (T e : entityes) {
+				getDbSQLite().insert(
+						tableName,
+						null,
+						ContentValueUtil.putAll(EntityReflection
+								.getFieldValues(e)));
+			}
+			for (int i = 0; i < entityes.length; i++) {
+				getDbSQLite().insert(
+						tableName,
+						null,
+						ContentValueUtil.putAll(EntityReflection
+								.getFieldValues(entityes[i])));
+			}
+			getDbSQLite().setTransactionSuccessful();
+			log.i("h4Android", "<" + entityes.length + ">Object-["
+					+ entityClass.getSimpleName() + "]-INSERT_ALL.");
+		} catch (SQLException e) {
+			log.e("[h4Android]-<SQLException>", e.toString());
+			throw e;
+		} finally {
+			if (getDbSQLite().inTransaction()) {
+				getDbSQLite().endTransaction();
+			}
 		}
-		for (ContentValues cv : cValues) {
-			getDbSQLite().insert(tableName, null, cv);
-		}
-		log.i("h4Android", "Object-[" + entityClass.getSimpleName()
-				+ "]-INSERT_ALL.");
 
 	}
 
@@ -341,8 +363,9 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 
 		SQLiteDatabase db = getDbSQLite();
 		Cursor c = db.rawQuery(sqlSelect, null);
+		List<T> lEntity = null;
 		if (c.moveToFirst()) {
-			List<T> lEntity = new ArrayList<T>();
+			lEntity = new ArrayList<T>();
 			do {
 				try {
 					Object e = classEntity.newInstance();
@@ -355,11 +378,10 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 				}
 			} while (c.moveToNext());
 			c.close();
-			return lEntity;
 		} else {
 			c.close();
-			return null;
 		}
+		return lEntity;
 
 	}
 
@@ -426,7 +448,7 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 
 		if (sql.trim().length() > 0) {
 			this.sqLiteDatabase.execSQL(sql);
-			System.out.println("[STDOUT]-EXEC SQL- " + sql);
+			log.i("h4Android", "Native Sql-[" + sql + "]-Executed.");
 		}
 
 	}
@@ -439,6 +461,16 @@ public class PersistenceManagerA22 extends SQLiteOpenHelper implements
 			}
 		}
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.com.softctrl.h4android.orm.engine.i.IPersistenceManager#logger()
+	 */
+	@Override
+	public ILog logger() {
+		return log;
 	}
 
 }
