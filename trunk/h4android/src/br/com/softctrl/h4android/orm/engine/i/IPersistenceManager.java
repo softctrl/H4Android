@@ -29,6 +29,9 @@ package br.com.softctrl.h4android.orm.engine.i;
 
 import java.util.List;
 
+import br.com.softctrl.h4android.orm.exception.NotEntityException;
+import br.com.softctrl.h4android.orm.util.log.i.ILog;
+
 /**
  * @author <a
  *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
@@ -120,7 +123,7 @@ public interface IPersistenceManager {
 	public int getDataBaseVersion();
 
 	/**
-	 * Executa uma instruçã sql nativa
+	 * Executa uma instrução sql nativa
 	 * 
 	 * @param sql
 	 */
@@ -141,8 +144,16 @@ public interface IPersistenceManager {
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws NotEntityException
 	 */
 	public void loadClasses(List<String> entityClasses)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException;
+			IllegalAccessException, NotEntityException;
+
+	/**
+	 * Métdo responsável por retornar um gerenciador de logs da aplicação
+	 * 
+	 * @return
+	 */
+	public ILog logger();
 }
