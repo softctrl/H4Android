@@ -38,7 +38,9 @@ import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 import br.com.softctrl.h4android.orm.util.StringUtil;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class ModelORMToSQL implements IModelORMDDL {
@@ -48,13 +50,13 @@ public class ModelORMToSQL implements IModelORMDDL {
 	private String tableName;
 	private List<java.lang.String> columns;
 
-	public ModelORMToSQL(Class<?> targetClass) {
+	public ModelORMToSQL(Class<?> targetClass) throws NotEntityException {
 		super();
 		if (EntityReflection.isEntity(targetClass)) {
 			this.targetClass = targetClass;
 			this.tableName = EntityReflection.getTableName(this.targetClass);
 		} else {
-			new NotEntityException("A classe " + targetClass.toString()
+			throw new NotEntityException("A classe " + targetClass.toString()
 					+ " não corresponde a uma entidade mapeada válida!");
 		}
 
@@ -66,7 +68,8 @@ public class ModelORMToSQL implements IModelORMDDL {
 		List<Field> fields = EntityReflection.getEntityFields(targetClass);
 		this.columns = new ArrayList<java.lang.String>();
 		for (Field field : fields) {
-			String column = FieldReflection.getColumnNameDDL(this.targetClass, field);
+			String column = FieldReflection.getColumnNameDDL(this.targetClass,
+					field);
 			if (!column.equals("")) {
 				this.columns.add(column);
 			}
