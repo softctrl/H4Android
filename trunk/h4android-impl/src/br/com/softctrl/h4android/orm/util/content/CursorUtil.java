@@ -52,12 +52,9 @@ public class CursorUtil {
 
 		Class<?> classEntity = entity.getClass();
 		Class<?> classTypeField;
-		// String nameField;
 		List<Field> fields = EntityReflection.getEntityFields(classEntity);
 		for (Field field : fields) {
 			classTypeField = field.getType();
-			// nameField = FieldReflection.getColumnName(classEntity,
-			// field.getName());
 			FieldReflection.setValue(entity, classEntity, field,
 					getValue(cursor, classEntity, field));
 		}
