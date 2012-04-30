@@ -28,14 +28,19 @@
 package br.com.softctrl.h4android.orm.engine.criterya;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import br.com.softctrl.h4android.orm.annotation.ddl.Enumerated;
 import br.com.softctrl.h4android.orm.reflection.EntityReflection;
 import br.com.softctrl.h4android.orm.reflection.FieldReflection;
 import br.com.softctrl.h4android.orm.util.EnumerateUtils;
+import br.com.softctrl.h4android.orm.util.FieldValue;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
 public class QuerySample extends Query {
@@ -44,20 +49,26 @@ public class QuerySample extends Query {
 		super(nameObject);
 	}
 
+	// TODO refatorar
+	@SuppressWarnings("deprecation")
 	public QuerySample(Object entity) {
 
 		super(EntityReflection.getTableName(entity.getClass()));
 		Class<?> classEntity = entity.getClass();
 		setClassEntity(classEntity);
-		for (Field f : classEntity.getDeclaredFields()) {
+		HashMap<String, FieldValue> fieldValues;
+		fieldValues = EntityReflection.getFieldValues(entity);
+		for (Entry<String, FieldValue> fv : fieldValues.entrySet()) {
 			Object value = null;
-			value = FieldReflection.getValue(entity, classEntity, f.getName());
+			value = FieldReflection.getValue(entity, classEntity, fv.getValue()
+					.getField().getName());
 			if (value != null) {
-				if (f.getType().isEnum()) {
-					Enumerated en = f.getAnnotation(Enumerated.class);
+				if (fv.getValue().getField().getType().isEnum()) {
+					Enumerated en = fv.getValue().getField()
+							.getAnnotation(Enumerated.class);
 					value = EnumerateUtils.getValueInEnum(value, en.value());
 				}
-				Eq eq = Eq.create(f.getName(), value);
+				Eq eq = Eq.create(fv.getValue().getField().getName(), value);
 				add(eq);
 			}
 		}
