@@ -30,9 +30,13 @@ package br.com.softctrl.h4android.orm.util;
 import java.lang.reflect.Field;
 
 /**
- * @author <a href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</a>.
+ * @author <a
+ *         href="mailto:carlostimoshenkorodrigueslopes@gmail.com">Timoshenko</
+ *         a>.
  * @version $Revision: 0.0.0.1 $
  */
+@Deprecated
+// TODO remove this in future
 public class FieldValue {
 
 	private Field field;
