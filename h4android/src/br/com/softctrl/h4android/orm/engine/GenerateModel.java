@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.softctrl.h4android.orm.engine.i.IModelORMDDL;
+import br.com.softctrl.h4android.orm.exception.NotEntityException;
 
 public class GenerateModel {
 
@@ -42,7 +43,7 @@ public class GenerateModel {
 
 	public void loadClasses(List<String> classes)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, NotEntityException {
 		for (String classe : classes) {
 			Class<?> c = Class.forName(classe.trim());
 			this.lista.add(new ModelORMToSQL(c));
@@ -50,21 +51,25 @@ public class GenerateModel {
 	}
 
 	public void loadClasses(String[] classes) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
+			InstantiationException, IllegalAccessException, NotEntityException {
 		for (String classe : classes) {
 			Class<?> c = Class.forName(classe.trim());
 			this.lista.add(new ModelORMToSQL(c));
 		}
 	}
 
-	// TODO em desenvolvimento
+	/**
+	 * Método responsável por gerar o ddl de criação de todas as entidades da
+	 * aplicação
+	 * 
+	 * @return Array de String contendo cada elemento uma sentença sql ddl de
+	 *         uma das entidades da aplicação
+	 */
 	public String[] getSQLModel() {
 
 		List<String> model = new ArrayList<String>();
 		for (IModelORMDDL modelORM : lista) {
 			model.add(modelORM.createSQL());
-			// System.out.println(l.dropSQL());
-			// System.out.println(l.createSQL());
 		}
 		return model.toArray(new String[0]);
 
