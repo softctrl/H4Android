@@ -55,7 +55,7 @@ public class Query extends ElementsQuery {
 	private String select = "*";
 	private TypeSelect typeQuery = TypeSelect.ALL;
 	private HashMap<Integer, IElementsQuery> elements = new HashMap<Integer, IElementsQuery>();
-	private int count=0;
+	private int count = 0;
 
 	protected Query(String nameObject) {
 		super(nameObject);
@@ -111,14 +111,14 @@ public class Query extends ElementsQuery {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> java.util.List<T> list() {
-		
+
 		if (typeQuery != TypeSelect.ALL) {
 			new SelectAllQueryException("Tipo de consulta não retorna list.");
 		}
 		String sql = toSql();
-		System.out.println(sql);
+		pm.logger().i("h4Android", "Query-[" + sql + "]-Executed.");
 		return (List<T>) pm.findAll(sql, getClassEntity());
-		
+
 	}
 
 	@Override
