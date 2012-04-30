@@ -141,6 +141,7 @@ public class FieldReflection {
 
 	public static TypeColumn getTypeColumn(java.lang.reflect.Field field) {
 
+		TypeColumn typeColumn = TypeColumn.TEXT;
 		String packageTypeBeavior = "br.com.softctrl.h4android.orm.beavior.type.TypeBeavior";
 		Class<?> classTypeBeavior;
 		try {
@@ -148,15 +149,18 @@ public class FieldReflection {
 					+ field.getType().toString());
 			ITypeBeavior<?, ?> typeBeavior;
 			typeBeavior = (ITypeBeavior<?, ?>) classTypeBeavior.newInstance();
-			return typeBeavior.getTypeValue();
+			typeColumn = typeBeavior.getTypeValue();
 		} catch (Exception e) {
 			return TypeColumn.TEXT;
 		}
+		return typeColumn;
 
 	}
 
 	private static IColumnBeavior getAnnotationColumn(Field field) {
+
 		String pacote = "br.com.softctrl.h4android.orm.beavior.column.ColumnBeavior";
+		IColumnBeavior columnBeavior = null;
 		if (field.isAnnotationPresent(Id.class)) {
 			pacote += Id.class.getSimpleName();
 		} else if (field.isAnnotationPresent(Version.class)) {
@@ -167,32 +171,40 @@ public class FieldReflection {
 			pacote += Enumerated.class.getSimpleName();
 		}
 		try {
-			return (IColumnBeavior) (Class.forName(pacote)).newInstance();
+			columnBeavior = (IColumnBeavior) (Class.forName(pacote))
+					.newInstance();
 		} catch (Exception e) {
-			return null;
+			e.printStackTrace();
 		}
+		return columnBeavior;
+
 	}
 
 	public static String getColumnName(Class<?> targetClass, Field field) {
 
+		String columnName = "";
 		try {
 			IColumnBeavior columnBeavior = getAnnotationColumn(field);
-			return columnBeavior.getNameColumn(field);
+			columnName = columnBeavior.getNameColumn(field);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return field.getName().toUpperCase();
+			columnName = field.getName().toUpperCase();
 		}
+		return columnName;
 
 	}
 
 	public static String getColumnName(Class<?> targetClass, String fieldName) {
 
+		String columnName = "";
 		try {
 			Field field = getField(targetClass, fieldName);
-			return getColumnName(targetClass, field);
+			columnName = getColumnName(targetClass, field);
 		} catch (Exception e) {
-			return fieldName.toUpperCase();
+			e.printStackTrace();
+			columnName = fieldName.toUpperCase();
 		}
+		return columnName;
 
 	}
 
