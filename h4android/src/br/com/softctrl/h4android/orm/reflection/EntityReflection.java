@@ -37,6 +37,7 @@ import br.com.softctrl.h4android.orm.annotation.ddl.Entity;
 import br.com.softctrl.h4android.orm.annotation.ddl.Table;
 import br.com.softctrl.h4android.orm.util.FieldValue;
 
+@SuppressWarnings("deprecation")
 public final class EntityReflection {
 
 	public static boolean isEntity(Class<?> targetClass) {
@@ -56,8 +57,11 @@ public final class EntityReflection {
 		List<Field> fields = new ArrayList<Field>();
 		if (!entityClass.equals(Object.class)) {
 			for (Field field : Arrays.asList(entityClass.getDeclaredFields())) {
-				if (!field.getName().equals("serialVersionUID")) {
-					fields.add(field);
+				if (!field
+						.isAnnotationPresent(br.com.softctrl.h4android.orm.annotation.ddl.Transient.class)) {
+					if (!field.getName().equals("serialVersionUID")) {
+						fields.add(field);
+					}
 				}
 			}
 			List<Field> fields2 = getEntityFields(entityClass.getSuperclass());
@@ -67,8 +71,11 @@ public final class EntityReflection {
 		} else {
 			List<Field> lista = new ArrayList<Field>();
 			for (Field field : Arrays.asList(entityClass.getDeclaredFields())) {
-				if (!field.getName().equals("serialVersionUID")) {
-					lista.add(field);
+				if (!field
+						.isAnnotationPresent(br.com.softctrl.h4android.orm.annotation.ddl.Transient.class)) {
+					if (!field.getName().equals("serialVersionUID")) {
+						lista.add(field);
+					}
 				}
 			}
 		}
@@ -83,14 +90,17 @@ public final class EntityReflection {
 
 		HashMap<String, FieldValue> fields = new HashMap<String, FieldValue>();
 		for (Field field : Arrays.asList(entity.getClass().getDeclaredFields())) {
-			if (!field.getName().equals("serialVersionUID")) {
-				FieldValue fv = new FieldValue();
-				fv.setField(field);
-				fv.setValue(FieldReflection.getValue(entity, entity.getClass(),
-						field.getName()));
-				String columnName = FieldReflection.getColumnName(
-						entity.getClass(), field.getName());
-				fields.put(columnName, fv);
+			if (!field
+					.isAnnotationPresent(br.com.softctrl.h4android.orm.annotation.ddl.Transient.class)) {
+				if (!field.getName().equals("serialVersionUID")) {
+					FieldValue fv = new FieldValue();
+					fv.setField(field);
+					fv.setValue(FieldReflection.getValue(entity,
+							entity.getClass(), field.getName()));
+					String columnName = FieldReflection.getColumnName(
+							entity.getClass(), field.getName());
+					fields.put(columnName, fv);
+				}
 			}
 		}
 		return fields;
