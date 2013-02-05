@@ -15,3 +15,11 @@ As seguintes funcionalidades ainda estão pendentes de implementação:
   * Suporte à consultas com paginação;
   * Melhorar tratamento para fields do tipo _java.util.Date_;
   * Finalizar tratamaneto para field do tipo _Boolean_ (os mesmos são tratados seguindo a especificação do próprio SQLite em que são persistidos na base como *Integer* sendo _false_ persistido como _0_ e _true_ como _1_);
+
+<!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
+<form target="pagseguro" action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+<input type="hidden" name="receiverEmail" value="carlostimoshenkorodrigueslopes@gmail.com" />
+<input type="hidden" name="currency" value="BRL" />
+<input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+</form>
+<!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
